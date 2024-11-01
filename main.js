@@ -36,6 +36,7 @@ const { host, port, cache } = options;
 
 app.use(bodyParser.json());
 const upload = multer();
+
 // допоміжні функції для операцій з файлами
 const readNote = (noteName) => {
   const notePath = getNotePath(noteName);
@@ -52,7 +53,7 @@ const deleteNote = (noteName) => {
   const notePath = getNotePath(noteName);
   if (fs.existsSync(notePath)) fs.unlinkSync(notePath);
 };
-// -------------------------------------------------
+
 
 app.get('/notes/:noteName', (req, res) => {
     const noteContent = readNote(req.params.noteName);
