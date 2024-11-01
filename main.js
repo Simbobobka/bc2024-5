@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const upload = multer();
+
 const program = new Command();
 const getNotePath = (noteName) => path.join(cache, `${noteName}.txt`);
 const form_note = `
@@ -35,7 +35,7 @@ const app = express();
 const { host, port, cache } = options;
 
 app.use(bodyParser.json());
-
+const upload = multer();
 // допоміжні функції для операцій з файлами
 const readNote = (noteName) => {
   const notePath = getNotePath(noteName);
@@ -98,23 +98,12 @@ app.post('/write', upload.none(), (req, res) => {
 });
 
 app.get('/UploadForm.html', (req, res) => {
-    res.send(`
-    <html>
-    <body>
-        <h2>Upload Form</h2>
-            <form method="post" action="/write" enctype="multipart/form-data">
-                <label for="note_name_input">Note Name:</label><br>
-                <input type="text" id="note_name_input" name="note_name"><br><br>
-                <label for="note_input">Note:</label><br>
-                <textarea id="note_input" name="note" rows="4" cols="50"></textarea><br><br>
-                <button>Upload</button>
-            </form>
-    </body>
-    </html>
-`);
+    res.send(form_note);
 });
 
 app.listen(port, host, () => {
     console.log(`Сервер запущено на http://${host}:${port}`);
     console.log(`Кеш директорія: ${cache}`);
 });
+
+//npm start -- --host 127.0.0.1 --port 8080 --cache ./cache
