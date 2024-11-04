@@ -7,20 +7,6 @@ const multer = require('multer');
 
 const program = new Command();
 const getNotePath = (noteName) => path.join(cache, `${noteName}.txt`);
-const form_note = `
-    <html>
-    <body>
-        <h2>Upload Form</h2>
-            <form method="post" action="/write" enctype="multipart/form-data">
-                <label for="note_name_input">Note Name:</label><br>
-                <input type="text" id="note_name_input" name="note_name"><br><br>
-                <label for="note_input">Note:</label><br>
-                <textarea id="note_input" name="note" rows="4" cols="50"></textarea><br><br>
-                <button>Upload</button>
-            </form>
-    </body>
-    </html>
-`
 
 program
   .requiredOption('-h, --host <type>', 'адреса сервера')
@@ -99,7 +85,8 @@ app.post('/write', upload.none(), (req, res) => {
 });
 
 app.get('/UploadForm.html', (req, res) => {
-    res.send(form_note);
+  const filePath = path.join(__dirname, 'UploadForm.html');
+  res.sendFile(filePath);
 });
 
 app.listen(port, host, () => {
